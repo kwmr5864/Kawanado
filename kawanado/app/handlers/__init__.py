@@ -1,5 +1,7 @@
 import os
 import tornado.web
+
+from abc import ABCMeta
 from tornado import template
 
 
@@ -19,13 +21,29 @@ def make_app(debug=False):
     return tornado.web.Application(handlers, **settings)
 
 
-class MainHandler(tornado.web.RequestHandler):
+class AbstractHandler(tornado.web.RequestHandler):
+    """
+    抽象ハンドラ。
+    """
+    __metaclass__ = ABCMeta
+
     def data_received(self, chunk):
         pass
 
+    def view(self, template_name, params):
+        """
+        画面を表示する。
+        :param str template_name: テンプレート名
+        :param dict params: パラメータ
+        :return:
+        """
+        loader = template.Loader("%s/../templates" % os.path.dirname(os.path.abspath(__file__)))
+        self.write(loader.load("%s.html" % template_name).generate(**params))
+
+
+class MainHandler(AbstractHandler):
     def get(self):
-        loader = template.Loader('/var/www/kawanado/app/templates')
-        self.write(loader.load('index.html').generate(**{
+        self.view('index', {
             'title': 'tornado sample',
             'text': 'hello, tornado!',
-        }))
+        })
