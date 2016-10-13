@@ -59,8 +59,10 @@ class SearchHandler(AbstractHandler):
         keyword = self.get_argument('keyword', '')
         search = Search(keyword=keyword)
         search.save()
+        searches = Search.select().order_by(Search.id.desc())
 
         self.view('search', {
             'title': "Search Result: %s" % keyword,
             'keyword': keyword,
+            'searches': searches,
         })
