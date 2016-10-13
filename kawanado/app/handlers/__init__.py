@@ -4,6 +4,8 @@ import tornado.web
 from abc import ABCMeta
 from tornado import template
 
+from entities import Search
+
 
 def make_app(debug=False):
     settings = {
@@ -55,6 +57,8 @@ class MainHandler(AbstractHandler):
 class SearchHandler(AbstractHandler):
     def get(self):
         keyword = self.get_argument('keyword', '')
+        search = Search(keyword=keyword)
+        search.save()
 
         self.view('search', {
             'title': "Search Result: %s" % keyword,
