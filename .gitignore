@@ -89,3 +89,4 @@ ENV/
 .ropeproject
 .idea/
 .vagrant/
+node_modules/
