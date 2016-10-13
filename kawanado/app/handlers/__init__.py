@@ -1,5 +1,6 @@
 import os
 import tornado.web
+from tornado import template
 
 
 def make_app(debug=False):
@@ -23,4 +24,5 @@ class MainHandler(tornado.web.RequestHandler):
         pass
 
     def get(self):
-        self.write("hello, tornado!")
+        t = template.Template("<html>{{ text }}</html>")
+        self.write(t.generate(text="hello, tornado"))
