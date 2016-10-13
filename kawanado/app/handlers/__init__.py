@@ -7,7 +7,7 @@ from tornado import template
 
 def make_app(debug=False):
     settings = {
-        "static_path": os.path.join(os.path.dirname(__file__), "static"),
+        "static_path": "%s/../static" % os.path.join(os.path.dirname(__file__)),
         "cookie_secret": "__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",
         "login_url": "/login",
         "xsrf_cookies": True,
@@ -15,6 +15,7 @@ def make_app(debug=False):
     }
     handlers = [
         (r"/", MainHandler),
+        (r"/search", SearchHandler),
         (r"/(apple-touch-icon\.png)", tornado.web.StaticFileHandler,
          dict(path=settings['static_path'])),
     ]
@@ -37,6 +38,9 @@ class AbstractHandler(tornado.web.RequestHandler):
         :param dict params: パラメータ
         :return:
         """
+        if not params.get('keyword'):
+            params['keyword'] = ''
+
         loader = template.Loader("%s/../templates" % os.path.dirname(os.path.abspath(__file__)))
         self.write(loader.load("%s.html" % template_name).generate(**params))
 
@@ -44,6 +48,15 @@ class AbstractHandler(tornado.web.RequestHandler):
 class MainHandler(AbstractHandler):
     def get(self):
         self.view('index', {
-            'title': 'tornado sample',
-            'text': 'hello, tornado!',
+            'title': 'Top',
+        })
+
+
+class SearchHandler(AbstractHandler):
+    def get(self):
+        keyword = self.get_argument('keyword', '')
+
+        self.view('search', {
+            'title': "Search Result: %s" % keyword,
+            'keyword': keyword,
         })
