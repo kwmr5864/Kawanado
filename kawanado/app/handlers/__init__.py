@@ -15,6 +15,7 @@ def make_app(debug=False):
     }
     handlers = [
         (r"/", MainHandler),
+        (r"/search", SearchHandler),
         (r"/(apple-touch-icon\.png)", tornado.web.StaticFileHandler,
          dict(path=settings['static_path'])),
     ]
@@ -37,6 +38,9 @@ class AbstractHandler(tornado.web.RequestHandler):
         :param dict params: パラメータ
         :return:
         """
+        if not params.get('keyword'):
+            params['keyword'] = ''
+
         loader = template.Loader("%s/../templates" % os.path.dirname(os.path.abspath(__file__)))
         self.write(loader.load("%s.html" % template_name).generate(**params))
 
@@ -45,5 +49,15 @@ class MainHandler(AbstractHandler):
     def get(self):
         self.view('index', {
             'title': 'tornado sample',
-            'text': 'hello, tornado!',
+        })
+
+
+class SearchHandler(AbstractHandler):
+    def get(self):
+        keyword = self.get_argument('keyword', '')
+
+        self.view('search', {
+            'title': 'Search Result',
+            'text': "%s: Search Result." % keyword,
+            'keyword': keyword,
         })
