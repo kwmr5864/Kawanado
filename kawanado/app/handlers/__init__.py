@@ -24,5 +24,8 @@ class MainHandler(tornado.web.RequestHandler):
         pass
 
     def get(self):
-        t = template.Template("<html>{{ text }}</html>")
-        self.write(t.generate(text="hello, tornado"))
+        loader = template.Loader('/var/www/kawanado/app/templates')
+        self.write(loader.load('index.html').generate(**{
+            'title': 'tornado sample',
+            'text': 'hello, tornado!',
+        }))
