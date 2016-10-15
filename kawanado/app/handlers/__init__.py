@@ -48,11 +48,11 @@ class AbstractHandler(tornado.web.RequestHandler):
 
 class MainHandler(AbstractHandler):
     def get(self):
-        searches = SearchModel.get_searches()
+        keywords = SearchModel.get_search_keywords()
 
         self.view('index', {
             'title': 'Top',
-            'searches': searches,
+            'keywords': keywords,
         })
 
 

@@ -3,8 +3,8 @@
 {% block main %}
 {% include 'partials/searchForm.html %}
 <select class="select2 form-control">
-    {% for x in searches %}
-    <option value="{{ x.id }}">{{ x.keyword }}</option>
+    {% for x in keywords %}
+    <option value="{{ x }}">{{ x }}</option>
     {% end %}
 </select>
 {% end %}
