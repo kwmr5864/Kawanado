@@ -3,8 +3,7 @@ import tornado.web
 
 from abc import ABCMeta
 from tornado import template
-
-from entities import Search
+from models import SearchModel
 
 
 def make_app(debug=False):
@@ -49,17 +48,19 @@ class AbstractHandler(tornado.web.RequestHandler):
 
 class MainHandler(AbstractHandler):
     def get(self):
+        keywords = SearchModel.get_search_keywords()
+
         self.view('index', {
             'title': 'Top',
+            'keywords': keywords,
         })
 
 
 class SearchHandler(AbstractHandler):
     def get(self):
         keyword = self.get_argument('keyword', '')
-        search = Search(keyword=keyword)
-        search.save()
-        searches = Search.select().order_by(Search.id.desc())
+        SearchModel.save(keyword)
+        searches = SearchModel.get_searches()
 
         self.view('search', {
             'title': "Search Result: %s" % keyword,
