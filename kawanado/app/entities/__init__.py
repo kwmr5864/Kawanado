@@ -12,7 +12,11 @@ db = MySQLDatabase(
 )
 
 
-class Search(Model):
+class AbstractEntity(Model):
+    pass
+
+
+class Search(AbstractEntity):
     """
     検索結果。
     """
