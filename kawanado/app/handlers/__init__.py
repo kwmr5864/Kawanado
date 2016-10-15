@@ -1,3 +1,4 @@
+import datetime
 import os
 import tornado.web
 
@@ -39,6 +40,7 @@ class AbstractHandler(tornado.web.RequestHandler):
         :param dict params: パラメータ
         :return:
         """
+        params['staticFileVersion'] = datetime.datetime.now().strftime("%Y%m%d%H%M")
         if not params.get('keyword'):
             params['keyword'] = ''
 
