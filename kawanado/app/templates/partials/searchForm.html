@@ -1,9 +1,13 @@
-<form class="form-inline" method="get" action="/search">
+<form class="form-inline" method="get" action="/search" id="searchForm" @submit.prevent="search();" v-cloak>
     <div class="form-group">
         <label>keyword</label>
         <div class="input-group">
-            <input class="form-control" type="text" name="keyword" value="{{ keyword }}">
+            <input class="form-control" type="text" name="keyword" value="{{ keyword }}" v-model="keyword">
         </div>
+    </div>
+    <div class="alert alert-dismissible" role="alert" :class="alert.class" v-if="alert.enable">
+        <button type="button" class="close" aria-label="閉じる" @click="alert.enable = false;"><span aria-hidden="true">×</span></button>
+        <strong>{% raw '{{ alert.type }}' %}</strong>{% raw '{{ alert.message }}' %}
     </div>
     <button class="btn btn-primary" type="submit">search</button>
 </form>

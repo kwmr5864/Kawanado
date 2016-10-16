@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
+    <style style="text/css">[v-cloak] { display:none; }</style>
     <link type="text/css" rel="stylesheet" href="/static/css/libs.min.css?v={{ staticFileVersion }}">
     {% block css %}{% end %}
 </head>
@@ -24,6 +25,7 @@
 </div>
 <script type="text/javascript" src="/static/js/jquery.min.js?v=3.1.1"></script>
 <script type="text/javascript" src="/static/js/libs.min.js?v={{ staticFileVersion }}"></script>
+<script type="text/javascript" src="/static/js/script.min.js?v={{ staticFileVersion }}"></script>
 {% block js %}{% end %}
 </body>
 </html>
